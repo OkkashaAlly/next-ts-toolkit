@@ -7,7 +7,7 @@ const Loader = () => (
     fill="none"
     className="animate-spin h-14 w-14"
   >
-    <g fill="#ec4899" fillRule="evenodd" clipRule="evenodd">
+    <g fill="#ffb5a3" fillRule="evenodd" clipRule="evenodd">
       <path
         d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8z"
         opacity=".2"

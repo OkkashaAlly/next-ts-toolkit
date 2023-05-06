@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 // COMPONENTS
-import { AsteroidCard, Loader } from "@/components/shared";
+import { AsteroidList, Loader } from "@/components/shared";
 import { H1, H2, H3 } from "@/components/typography";
 
 // ====================================
@@ -33,8 +33,6 @@ export default function HomePage() {
       setLoading(true);
       const res = await fetch(API_URL, options);
       const data = await res.json();
-      console.log("Response: ", data);
-
       if (data.error) handleError(data.error);
 
       const asteroids = [
@@ -71,7 +69,9 @@ export default function HomePage() {
         <div className="mt-8 px-1">
           <div className="flex items-center justify-between flex-col md:flex-row">
             <div className="flex items-baseline flex-col md:flex-row gap-2">
-              <H2 styles="text-white">Discover Latest asteroids Collection </H2>
+              <H2 styles="text-zinc-300">
+                Discover Latest asteroids Collection{" "}
+              </H2>
               <small className="text-gray-500 font-light">
                 (Please use the date range selectors to get collection of your
                 choice)
@@ -82,41 +82,37 @@ export default function HomePage() {
               {/* date range selectors */}
               <div className="flex items-center justify-center gap-2">
                 <div className="flex items-center justify-center gap-2">
-                  <H3 styles="text-white">From</H3>
+                  <H3 styles="text-zinc-300">From</H3>
                   <input
                     type="date"
                     value={startDate}
                     onChange={e => setStartDate(e.target.value)}
-                    className="bg-zinc-800 text-white rounded-lg p-2"
+                    className="bg-zinc-800 text-zinc-300 rounded-lg p-2"
                   />
                 </div>
                 <div className="flex items-center justify-center gap-2">
-                  <H3 styles="text-white">To</H3>
+                  <H3 styles="text-zinc-300">To</H3>
                   <input
                     type="date"
                     value={endDate}
                     onChange={e => setEndDate(e.target.value)}
-                    className="bg-zinc-800 text-white rounded-lg p-2"
+                    className="bg-zinc-800 text-zinc-300 rounded-lg p-2"
                   />
                 </div>
               </div>
             </div>
           </div>
           <div className="mt-6">
-            {error ? (
-              <div className="flex justify-center">
-                <H3 styles="text-white">{error.message}</H3>
-              </div>
-            ) : loading ? (
+            {loading ? (
               <div className="flex justify-center">
                 <Loader />
               </div>
-            ) : (
-              <div className="space-y-3">
-                {asteroids.map((asteroid: any) => (
-                  <AsteroidCard key={asteroid.id} info={asteroid} />
-                ))}
+            ) : error ? (
+              <div className="flex justify-center">
+                <H3 styles="text-zinc-300">{error}</H3>
               </div>
+            ) : (
+              <AsteroidList data={asteroids} />
             )}
           </div>
         </div>
@@ -128,12 +124,12 @@ export default function HomePage() {
 ////////////////////////////////////////
 // EXTENDED COMPONENTS /////////////////
 const Banner = () => (
-  <div className="relative overflow-hidden flex items-center justify-center h-[200px] rounded-xl bg-gradient-to-r from-pink-500 to-purple-500">
+  <div className="relative overflow-hidden flex items-center justify-center h-[200px] rounded-xl bg-[url('../assets/bg-2.jpg')] bg-center">
     <div className="absolute w-48 h-48 bg-white opacity-50 rounded-full -top-24 md:-top-9 -left-24 md:-left-12" />
 
     <div className="flex flex-col items-center text-center justify-center space-y-3">
-      <H1 styles="text-white uppercase">asteroids</H1>
-      <H2 styles="text-white">The largest asteroids collection</H2>
+      <H1 styles="text-zinc-100 uppercase pb-14">asteroids</H1>
+      {/* <H2 styles="text-zinc-100">The largest asteroids collection</H2> */}
     </div>
 
     <div className="absolute w-72 h-72 bg-white opacity-50 rounded-full -bottom-48 md:-bottom-24 -right-32 md:-right-12" />
