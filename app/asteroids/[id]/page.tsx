@@ -4,8 +4,10 @@ import { Loader } from "@/components/shared";
 import { H2 } from "@/components/typography";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Image from "next/image"
 
-// import { FaAngleLeft } from "react-icons/fa";
+import globeImg from "@/assets/globe-2.jpg";
+import { FaAngleLeft } from "react-icons/fa";
 
 const ViewPage = ({ params }: { params: { id: string } }) => {
   const API_URL = `https://api.nasa.gov/neo/rest/v1/neo/${params.id}?api_key=DEMO_KEY`;
@@ -33,7 +35,7 @@ const ViewPage = ({ params }: { params: { id: string } }) => {
       setLoading(false);
 
       // TODO: save to localStorage here - request rate limit during development
-      // localStorage.setItem("asteroid", JSON.stringify(data));
+      localStorage.setItem("asteroid", JSON.stringify(data));
     } catch (error: any) {
       console.log("Error: ", error);
       setLoading(false);
@@ -50,23 +52,23 @@ const ViewPage = ({ params }: { params: { id: string } }) => {
   console.log("Asteroid: ", asteroid);
 
   // load from localStorage if asteroid is null - request rate limit during development
-  // useEffect(() => {
-  //   const asteroid = localStorage.getItem("asteroid");
-  //   if (asteroid) setAsteroid(JSON.parse(asteroid));
-  // }, []);
+  useEffect(() => {
+    const asteroid = localStorage.getItem("asteroid");
+    if (asteroid) setAsteroid(JSON.parse(asteroid));
+  }, []);
 
   return (
     <div className="p-6 pb-14 px-8 bg-zinc-900 text-zinc-300 min-h-screen">
       <div className="max-w-screen-xl w-[80%] mx-auto h-full">
         <div className="">
-          <Link href=".." className="p-2 bg-zinc-800  rounded-md">
-            {/* <FaAngleLeft className="ml-2"/> */}
+          <Link href=".." className="p-2 bg-zinc-800  rounded-md flex gap-2 items-center w-fit">
+            <FaAngleLeft className="ml-2"/>
             <span>Back</span>
           </Link>
         </div>
         <>
           {loading ? (
-            <div className="h-full w-full flex justify-center items-center">
+            <div className="h-[800px] w-full flex justify-center items-center">
               <Loader />
             </div>
           ) : error ? (
@@ -75,8 +77,13 @@ const ViewPage = ({ params }: { params: { id: string } }) => {
             asteroid && (
               <div className="flex gap-14 mt-5 p-6 bg-zinc-800  rounded-lg">
                 {/*image */}
-                <div className="rounded-md bg-[#ffc5ad] w-[400px] h-[400px] flex items-center justify-center text-zinc-900">
-                  <span>Globe model goes here</span>
+                <div className="rounded-md bg-[#ffc5ad] text-zinc-900 overflow-hidden">
+                  <Image
+                    src={globeImg}
+                    width={450}
+                    height={450}
+                    alt={asteroid.name}
+                  />
                 </div>
                 {/*asteroid details */}
                 <div className="space-y-4">
