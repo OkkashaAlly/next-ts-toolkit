@@ -1,8 +1,8 @@
 // 'use client'
+import Image from "next/image";
 import Link from "next/link";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { H3 } from "../typography";
-import Image from "next/image";
 
 import globeImg from "@/assets/globe.jpg";
 
@@ -47,8 +47,11 @@ const AsteroidCard = ({ info }: { info: any }) => {
           </Link>
         </div>
       </div>
+      
     </>
   );
 };
 
 export default AsteroidCard;
+
+
