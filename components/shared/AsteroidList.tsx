@@ -18,11 +18,7 @@ const AsteroidList = ({ data }: { data: any[] }) => {
     setStart(prev => prev - step);
     setEnd(prev => prev - step);
   };
-
-  console.log("page: ", page);
-  console.log("start: ", start);
-  console.log("end: ", end);
-
+  
   return (
     <>
       <div className="">

@@ -43,8 +43,8 @@ export default function HomePage() {
       setAsteroids(asteroids);
       setLoading(false);
 
-      // save to local storage
-      localStorage.setItem("asteroids", JSON.stringify(asteroids));
+      // save to local storage - during development
+      // localStorage.setItem("asteroids", JSON.stringify(asteroids));
       
     } catch (error: any) {
       console.log("Error: ", error);
@@ -61,11 +61,11 @@ export default function HomePage() {
     })();
   }, [startDate, endDate]);
 
-  // load from localStorage if asteroids is null
-  useEffect(() => {
-    const asteroids = localStorage.getItem("asteroids");
-    if (asteroids) setAsteroids(JSON.parse(asteroids));
-  }, []);
+  // load from localStorage if request limit exceed
+  // useEffect(() => {
+  //   const asteroids = localStorage.getItem("asteroids");
+  //   if (asteroids) setAsteroids(JSON.parse(asteroids));
+  // }, []);
     
 
   // RETURN ///////////////////////////

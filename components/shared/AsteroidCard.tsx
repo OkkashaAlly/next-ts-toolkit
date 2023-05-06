@@ -13,7 +13,7 @@ const AsteroidCard = ({ info }: { info: any }) => {
     <>
       <div className="border-b border-b-zinc-800 text-zinc-400 hover:text-zinc-200 rounded p-4 px-5 flex items-center hover:bg-[#ea8281]/20">
         <div className="w-[60px]">
-          <Image src={globeImg} width={30} height={30} alt={info.name} />
+          <Image src={globeImg} width={30} height={30} alt={info.name} className="rounded" />
         </div>
         <div className="w-[300px] flex items-baseline">
           <H3 styles="ml-1">{info.name}</H3>
