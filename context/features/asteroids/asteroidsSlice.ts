@@ -15,17 +15,27 @@ const initialState: InitialState = {
 };
 
 // Actions ===========================
-export const fetchAsteroids = createAsyncThunk("job/fetchAsteroids", async () => {
-  try {
-  const response = await axios.get("/api/job/all");
-  const { data } = await response.data;
-  return data;
-  }catch (error: any) {
-    console.log("Error: ", error);
-    throw error.response.data;
+export const fetchAsteroids = createAsyncThunk(
+  "asteroids/fetchAsteroids",
+  async (inputs: { startDate: string; endDate: string }) => {
+    // CONSTANTS
+    const API_URL = `https://api.nasa.gov/neo/rest/v1/feed?start_date=${inputs.startDate}&end_date=${inputs.endDate}&api_key=DEMO_KEY`;
 
+    try {
+      const response = await axios.get(API_URL);
+      const { data } = response;
+      const asteroids = [
+        ...data.near_earth_objects[inputs.startDate],
+        ...data.near_earth_objects[inputs.endDate],
+      ];
+      console.log("asteroids: ", asteroids);
+      return asteroids;
+    } catch (error: any) {
+      console.log("Error: ", error);
+      throw error.response.data;
+    }
   }
-});
+);
 
 // Slice ============================
 export const asteroidsSlice = createSlice({
@@ -38,7 +48,7 @@ export const asteroidsSlice = createSlice({
     });
     builder.addCase(
       fetchAsteroids.fulfilled,
-      (state, action: PayloadAction<any[]>) => {
+      (state, action) => {
         state.loading = false;
         state.asteroids = action.payload;
         state.error = undefined;

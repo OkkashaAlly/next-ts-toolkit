@@ -6,67 +6,28 @@ import { useEffect, useState } from "react";
 import { AsteroidList, Loader } from "@/components/shared";
 import { H1, H2, H3 } from "@/components/typography";
 
+// REDUX
+import { fetchAsteroids } from "@/context/features/asteroids/asteroidsSlice";
+import { useAppDispatch, useAppSelector } from "@/context/hooks";
+
 // ====================================
 // Home PAGE COMPONENTS ////////
 // ====================================
 export default function HomePage() {
-  const [asteroids, setAsteroids] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<any>(null);
+  // redux
+  const dispatch = useAppDispatch();
+  const { loading, error, asteroids } = useAppSelector(
+    state => state.asteroids
+  );
+
+  // state
   const [startDate, setStartDate] = useState("2015-09-07");
   const [endDate, setEndDate] = useState("2015-09-08");
 
-  // CONSTANTS
-  const API_URL = `https://api.nasa.gov/neo/rest/v1/feed?start_date=${startDate}&end_date=${endDate}&api_key=DEMO_KEY`;
-
-  // fetching asteroids from
-  const fetchAsteroids = async () => {
-    // request options
-    const options = { method: "GET", headers: { accept: "application/json" } };
-    // error handling
-    const handleError = (err: any) => {
-      setError(err.message);
-      throw new Error(err);
-    };
-
-    try {
-      setLoading(true);
-      const res = await fetch(API_URL, options);
-      const data = await res.json();
-      if (data.error) handleError(data.error);
-
-      const asteroids = [
-        ...data.near_earth_objects[startDate],
-        ...data.near_earth_objects[endDate],
-      ];
-
-      setAsteroids(asteroids);
-      setLoading(false);
-
-      // save to local storage - during development
-      // localStorage.setItem("asteroids", JSON.stringify(asteroids));
-      
-    } catch (error: any) {
-      console.log("Error: ", error);
-      setLoading(false);
-    }
-  };
-
-  console.log("Asteroids: ", asteroids);
-
   // fetch asteroids once (on page load)
   useEffect(() => {
-    (async () => {
-      await fetchAsteroids();
-    })();
+    dispatch(fetchAsteroids({ startDate, endDate }));
   }, [startDate, endDate]);
-
-  // load from localStorage if request limit exceed
-  // useEffect(() => {
-  //   const asteroids = localStorage.getItem("asteroids");
-  //   if (asteroids) setAsteroids(JSON.parse(asteroids));
-  // }, []);
-    
 
   // RETURN ///////////////////////////
   return (
@@ -123,7 +84,7 @@ export default function HomePage() {
                 <H3 styles="text-zinc-300">{error}</H3>
               </div>
             ) : (
-              <AsteroidList data={asteroids} />
+              asteroids && <AsteroidList data={asteroids!} />
             )}
           </div>
         </div>
